@@ -1,0 +1,4 @@
+- hosts: localhost
+  sudo: true
+  tasks:
+    - debug: msg="Running ansible!"
