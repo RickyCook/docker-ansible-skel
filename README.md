@@ -16,6 +16,21 @@ After Ansible is done, all traces of it should be purged from the container so
 that you're left with just the application without extra cruft. This can be
 changed by editing the last few lines in the Dockerfile.
 
+Updating the Ansible playbook should be a quick and painless process with the
+Docker caches. We install Ansible and its dependencies in a virtualenv, before
+adding the actual playbook, so most of the build process is cached. The only
+thing that can't really be is the playbook run itself, which will always be
+run from scratch every time. You may want to change with by applying tags on
+different Docker layers. If this is the case, you can copy the lines (it's a multi-line command for cleanliness)
+that start:
+
+    RUN /tmp/ansible/python_env/bin/ansible-playbook \
+
+and at the end, add
+
+    --inventory-file /tmp/ansible/playbook/hosts \
+    --tags=<your>,<tags>,<here>
+
 Example
 -------
 By running the skeleton, you should see a lot of Docker output relating to
